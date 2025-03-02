@@ -16,3 +16,6 @@ Content-Type: application/json
     "name": "Flash"
     
 }
+
+### delete end point
+DELETE http://localhost:8383/api/data
