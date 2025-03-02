@@ -1,0 +1,27 @@
+{
+  "name": "project2",
+  "version": "1.0.0",
+  "description": "full stack todo application that uses nodejs backend",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --trace-warnings --watch --env-file=.env ./src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeltaG06/Backend-project.git"
+  },
+  "author": "Gaurav Parker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeltaG06/Backend-project/issues"
+  },
+  "homepage": "https://github.com/DeltaG06/Backend-project#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
