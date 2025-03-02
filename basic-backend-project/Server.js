@@ -23,8 +23,13 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
    console.log('Reached dashboard');
     
-  res.send('Welcome to the dashboard!')
+  res.send('<h>Welcome to the dashboard!</h>')  
 })   
+app.get('/api/data', (req, res) => {
+  console.log('Reached data'),
+  res.send(data)
+}
+)  
 
 app.listen(Port, () => console.log(`Server is running on : ${Port}`));
  
