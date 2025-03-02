@@ -7,17 +7,26 @@ const app = express()
 const Port = 8383         
 console.log('this is an extra line');
 
-let data = {
-  name: 'Gaurav',   
-  age: 18,
-  city: 'Candepar'
-}
-  
+let data = ['Gaurav']
+
+// middleware
+
+app.use(express.json());
+
   //http paths and verbs (get, post, put, delete)
 app.get('/', (req, res) => {
-  res.send('<h1>WELCOME!(Basic html code)</h1>')
-  res.sendStatus(588)
   
+    res.send(`
+      <body
+      style="background-color:pink;
+      color: blue;
+       font-family: Arial, sans-serif; 
+       text-align: center;">
+      <p>${JSON.stringify(data)}</p>
+      </body>
+    `);
+  
+  console.log('Reached home page');  
 })
 
 app.get('/dashboard', (req, res) => {
@@ -26,8 +35,14 @@ app.get('/dashboard', (req, res) => {
   res.send('<h>Welcome to the dashboard!</h>')  
 })   
 app.get('/api/data', (req, res) => {
-  console.log('Reached data'),
-  res.send(data)
+  //someone wants to create a user
+  //user clicks the button  and browser sends a request to the server to complete the action
+  const newEntry = req.body;
+  console.log(newEntry);
+  data.push(newEntry);
+  
+
+  
 }
 )  
 

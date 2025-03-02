@@ -6,3 +6,11 @@ GET http://localhost:8383/dashboard
 
 ### TEST GET /api/data enpoint
 GET http://localhost:8383/api/data
+
+### DATA ENDPOINT FOR ADDING A USER
+POST http://localhost:8383/api/data
+Content-Type: application/json
+{
+    "name": "puri"
+    
+}
