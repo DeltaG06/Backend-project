@@ -7,10 +7,15 @@ const app = express()
 const Port = 8383         
 console.log('this is an extra line');
 
+let data = {
+  name: 'Gaurav',   
+  age: 18,
+  city: 'Candepar'
+}
   
   //http paths and verbs (get, post, put, delete)
 app.get('/', (req, res) => {
-  res.send('<h1>Hello World!(Basic html code)</h1>')
+  res.send('<h1>WELCOME!(Basic html code)</h1>')
   res.sendStatus(588)
   
 })
