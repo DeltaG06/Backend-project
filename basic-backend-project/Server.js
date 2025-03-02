@@ -32,13 +32,19 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
    console.log('Reached dashboard');
     
-  res.send('<h>Welcome to the dashboard!</h>')  
-})   
+   res.send('<h>Welcome to the dashboard!</h>')  
+
+}) 
+app.get('/api/data', (req, res) => {
+  res.send(data); 
+  console.log('Reached data page');
+})  
+
 app.post('/api/data', (req, res) => {
   //someone wants to create a user
   //user clicks the button  and browser sends a request to the server to complete the action
   const newEntry = req.body;
-  res.send(newEntry);
+  data.push(newEntry);
   console.log(newEntry);
   data.push(newEntry);
   
@@ -48,4 +54,4 @@ app.post('/api/data', (req, res) => {
 )  
 
 app.listen(Port, () => console.log(`Server is running on : ${Port}`));
- 
+
