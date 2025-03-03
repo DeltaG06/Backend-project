@@ -14,8 +14,8 @@ const __dirname = dirname(__filename)
 // also tell express to serve all files in the public 
 
 //middleware
-app.use(express.json)
-app.use(express.static(path.join(__dirname,'../public')))
+app.use(express.json());
+app.use(express.static(path.join(__dirname,'../public')));
 
 
 app.get('/', (req, res) => {
