@@ -2,6 +2,7 @@
 import express from 'express';
 import path,{ dirname } from 'path';
 import { fileURLToPath } from 'url';
+import authRoutes from './routes/authRoutes.js'
 
 const app = express();
 const PORT = process.env.PORT || 6439
@@ -22,6 +23,9 @@ app.get('/', (req, res) => {
   res.sendfile(path.join(__dirname,'public','index.html'));
 
 });
+
+//routes 
+app.use('/auth',authRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
