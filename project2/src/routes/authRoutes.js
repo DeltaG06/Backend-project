@@ -8,36 +8,30 @@ const router = express.Router()
 //register a new endpoint /auth/register
 router.post('/register',(req,res)=>{
 
-    const {username,password} = req.body
-    //saves gaurav123 | hhnfkenfweoskndks (encrypted password)
-    //saves username and irreversibly encrypted password
+    const { username, password } = req.body
+    // save the username and an irreversibly encrypted password
+    // gaurav123 | aklsdjfasdf.asdf..qwe..q.we...qwe.qw.easd
 
-    //encrypt the password
-    
-    const hashedPassword = bcrypt.hashSync(password,8)
+    // encrypt the password
+    const hashedPassword = bcrypt.hashSync(password, 8)
 
     // save the new user and hashed password to the db
     try {
-        const insertUser = db.prepare(`INSERT INTO users (username,password)
-            VALUES (?,?)`)
+        const insertUser = db.prepare(`INSERT INTO users (username, password) VALUES (?, ?)`)
         const result = insertUser.run(username, hashedPassword)
 
-        //now that we have a user ,I wnt to add first todo
-        const defaultTodo ='Hello! Add yout first Todo!'
-        const insertTodo = db.prepare(`INSERT INTO todos {user-id, task}
-            VALUE(?,?)` )
-        insertTodo.run(result.lastInsertRowid,defaultTodo)
+        // now that we have a user, I want to add their first todo for them
+        const defaultTodo = `Hello :) Add your first todo!`
+        const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
+        insertTodo.run(result.lastInsertRowid, defaultTodo)
 
-        //creating a token
-        const token = jwt.sign({id: result.lastInsertRowid}, process.env.JWT_SECRET,{ expiresIn:'24h'})
-        res.json({ token  })
-    } catch (error) {
-        console.log(error.message)
+        // create a token
+        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' })
+        res.json({ token })
+    } catch (err) {
+        console.log(err.message)
         res.sendStatus(503)
     }
-
-    console.log(hashedPassword);
-    res.sendStatus(201)
     
 })
 
