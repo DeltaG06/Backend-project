@@ -10,7 +10,14 @@ const PORT = process.env.PORT || 6439
 const __filename = fileURLToPath(import.meta.url)
 //Get the directory name from the file path
 const __dirname = dirname(__filename)
-//serving up hTML filefrom /public directory
+//serving up hTML filefrom /public director
+// also tell express to serve all files in the public 
+
+//middleware
+app.use(express.json)
+app.use(express.static(path.join(__dirname,'../public')))
+
+
 app.get('/', (req, res) => {
   res.sendfile(path.join(__dirname,'public','index.html'));
 
@@ -19,3 +26,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
+
