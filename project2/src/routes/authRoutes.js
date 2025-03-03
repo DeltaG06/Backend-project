@@ -5,8 +5,12 @@ import db from '../db.js'
 
 const router = express.Router()
 
+//register a new endpoint /auth/register
 router.post('/register',(req,res)=>{
 
+    const {username,password} = req.body
+    console.log(username , password);
+    res.sendStatus(201)
     
 })
 
