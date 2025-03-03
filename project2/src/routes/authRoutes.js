@@ -30,7 +30,7 @@ router.post('/register',(req,res)=>{
 
         //creating a token
         const token = jwt.sign({id: result.lastInsertRowid}, process.env.JWT_SECRET,{ expiresIn:'24h'})
-
+        res.json({ token  })
     } catch (error) {
         console.log(error.message)
         res.sendStatus(503)
