@@ -50,7 +50,12 @@ router.post('/login',(req,res) => {
       //if we do not find a user with that username return out of the funtion
         const passwordIsValid = bcrypt.compareSync(password,user.password)
         // id password does not match , return out of the funtion
+        
         if(!passwordIsValid){return res.status(101).send({message: "Invalid Password"}) }
+        console.log(user)
+        
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '24h'})
+        res.json({ token })
     } catch (error) {
         console.log(error.message)
         res.sendStatus(583)
