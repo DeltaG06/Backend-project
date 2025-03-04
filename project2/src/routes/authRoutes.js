@@ -21,7 +21,7 @@ router.post('/register',(req,res)=>{
         const result = insertUser.run(username, hashedPassword)
 
         // now that we have a user, I want to add their first todo for them
-        const defaultTodo = `Hello :) Add your first todo!`
+        const defaultTodo = `Hello! Add your first todo!`
         const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
         insertTodo.run(result.lastInsertRowid, defaultTodo)
 
@@ -29,19 +29,38 @@ router.post('/register',(req,res)=>{
         const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' })
         res.json({ token })
     } catch (err) {
-        console.log(err.message)
+        console.log(error.message)
         res.sendStatus(503)
     }
     
 })
 
-router.post('/login',(req,res)=>{
+router.post('/login',(req,res) => {
 
     //we get email and we look for password associated with it
     //when we get it back the password is encrypted
     //so it cannot be compared with the password entered by the user
     //so what we can do is again, one way encrypt the password user entered
+    const {username,password} = req.body
+    try {
+        const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
+        const user = getUser.get(username)
 
+        if (!user){return res.status(404).send({message: " User not found"})}
+      //if we do not find a user with that username return out of the funtion
+        const passwordIsValid = bcrypt.compareSync(password,user.password)
+        // id password does not match , return out of the funtion
+        if(!passwordIsValid){return res.status(101).send({message: "Invalid Password"}) }
+    } catch (error) {
+        console.log(error.message)
+        res.sendStatus(583)
+    }
+
+    
+
+    
+
+    
 
 })
 
