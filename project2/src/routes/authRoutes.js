@@ -5,12 +5,11 @@ import db from '../db.js'
 
 const router = express.Router()
 
-//register a new endpoint /auth/register
-router.post('/register',(req,res)=>{
-
+// Register a new user endpoing /auth/register
+router.post('/register', (req, res) => {
     const { username, password } = req.body
     // save the username and an irreversibly encrypted password
-    // gaurav123 | aklsdjfasdf.asdf..qwe..q.we...qwe.qw.easd
+    // save gaurav123 | aklsdjfasdf.asdf..qwe..q.we...qwe.qw.easd
 
     // encrypt the password
     const hashedPassword = bcrypt.hashSync(password, 8)
@@ -21,7 +20,7 @@ router.post('/register',(req,res)=>{
         const result = insertUser.run(username, hashedPassword)
 
         // now that we have a user, I want to add their first todo for them
-        const defaultTodo = `Hello! Add your first todo!`
+        const defaultTodo = `Hello ! Add your first todo!`
         const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
         insertTodo.run(result.lastInsertRowid, defaultTodo)
 
@@ -29,48 +28,46 @@ router.post('/register',(req,res)=>{
         const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' })
         res.json({ token })
     } catch (err) {
-       
+
         console.log(err.message)
         res.sendStatus(503)
     }
-    
+
 })
 
-router.post('/login',(req,res) => {
+router.post('/login', (req, res) => {
+    // we get their email, and we look up the password associated with that email in the database
+    // but we get it back and see it's encrypted, which means that we cannot compare it to the one the user just used trying to login
+    // so what we can to do, is again, one way encrypt the password the user just entered
 
-    //we get email and we look for password associated with it
-    //when we get it back the password is encrypted
-    //so it cannot be compared with the password entered by the user
-    //so what we can do is again, one way encrypt the password user entered
-    const {username,password} = req.body
+    const { username, password } = req.body
+
     try {
         const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
         const user = getUser.get(username)
 
-        if (!user){return res.status(404).send({message: " User not found"})}
-      //if we do not find a user with that username return out of the funtion
-        const passwordIsValid = bcrypt.compareSync(password,user.password)
-        // id password does not match , return out of the funtion
-        
-        if(!passwordIsValid){return res.status(101).send({message: "Invalid Password"}) }
+        // if we cannot find a user associated with that username, return out from the function
+        if (!user) { return res.status(404).send({ message: "User not found" }) }
+
+        const passwordIsValid = bcrypt.compareSync(password, user.password)
+        // if the password does not match, return out of the function
+        if (!passwordIsValid) { return res.status(401).send({ message: "Invalid password" }) }
         console.log(user)
-        
-        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '24h'})
+
+        // then we have a successful authentication
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' })
         res.json({ token })
 
-        
+
     } catch (err) {
-       
+        
         console.log(err.message)
-        res.sendStatus(583)
+        res.sendStatus(503)
+
+
     }
 
-    
-
-    
-
-    
-
 })
+
 
 export default router

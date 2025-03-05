@@ -32,5 +32,7 @@ app.use('/todos',authMiddleware,todoRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
-});
 
+
+
+});
